@@ -10,12 +10,12 @@ Get your pipe on
 
 ## Pipeline
 
-1. **Raw Reads (FASTQ)**
+**1. Raw Reads (FASTQ)**
   * QC with [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
   * Paired-end sequencing has two FASTQ files `R1.fq` and `R2.fq`
   * You can compress the files with `gzip` to save space
   
-2. **Align with [bwa mem](http://bio-bwa.sourceforge.net/)**
+**2. Align with [bwa mem](http://bio-bwa.sourceforge.net/)**
 
 ```
 bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id\tSM:sample_name\tLB:library_prep_id\tPL:ILLUMINA' 
@@ -29,17 +29,17 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
     * LB: library prep ID
     * PL: Platform (ILLUMINA)
   
-3. **Convert SAM -> BAM**
+**3. Convert SAM -> BAM**
   * can do with with a pipe with bwa
   * `bwa mem ..... | samtools view -bh >out.bam`
   * thread with the `-@ THREADS` option
   
-4. **Mark Duplicates**
+**4. Mark Duplicates**
   * Some options here. [Picard tools](https://broadinstitute.github.io/picard/) is the go-to standard
   * [Sambamba](http://lomereiter.github.io/sambamba/) is faster but not as well tested. 
   * This step identifies and removes (unless needed) PCR duplicates
   
-5. **Sort by Coordinate System** 
+**5. Sort by Coordinate System** 
   * Lots of options here too. 
   * For larger alignment files, use a temporary directory on scratch (local or OASIS)
   * For super-large alignment files, use temporary directory on OASIS scratch and pray the sys-admin does not notice
@@ -47,9 +47,9 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
   * `samtools sort` 
   * `sambamba sort`
 
-6. **GATK Indel Realignment**
+**6. GATK Indel Realignment**
 
-7. **[GATK](https://software.broadinstitute.org/gatk/) BQSR**
+**7. [GATK](https://software.broadinstitute.org/gatk/) BQSR**
   * Base Quality Score Recalibration
   * This step takes a very long time
   * Two-steps
@@ -57,7 +57,7 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
     * Adjust the base quality score for EACH READ!!! (this is the time suck) 
 
 
-8. **Variant Calling**
+**8. Variant Calling**
   * HaplotypeCaller
   * VQSR: Vartiant Quality Score Recalibration 
 
