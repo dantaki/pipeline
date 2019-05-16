@@ -39,4 +39,25 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
   * [Sambamba](http://lomereiter.github.io/sambamba/) is faster but not as well tested. 
   * This step identifies and removes (unless needed) PCR duplicates
   
-5. 
+5. Sort 
+  * Lots of options here too. 
+  * For larger alignment files, use a temporary directory on scratch (local or OASIS)
+  * For super-large alignment files, use temporary directory on OASIS scratch and pray the sys-admin does not notice
+  
+  * `samtools sort` 
+  * `sambamba sort`
+
+6. [GATK](https://software.broadinstitute.org/gatk/) BQSR
+  * Base Quality Score Recalibration
+  * This step takes a very long time
+  * Two-steps
+    * Build the BQSR model
+    * Adjust the base quality score for EACH READ!!! (this is the time suck) 
+
+7. GATK Indel Realignment
+
+8. Variant Calling. 
+
+.... 
+
+  
