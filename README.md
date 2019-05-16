@@ -2,8 +2,9 @@
 Get your pipe on
 --------------------
 
-## Guidelines (just a good rule of thumb)
-[Functional equivalence of genome sequencing analysis pipelines enables harmonized variant calling across human genetics projects](https://www.nature.com/articles/s41467-018-06159-4)
+### Guidelines (just a good rule of thumb)
+
+[*Functional equivalence of genome sequencing analysis pipelines enables harmonized variant calling across human genetics projects*](https://www.nature.com/articles/s41467-018-06159-4)
 
 -----------
 
@@ -22,6 +23,11 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
 
   * outputs to STDOUT as SAM
   * thread with the `-t THREADS` option
+  * the `-R` option is important! GATK and other downstream tools require the Read Group information.
+    * ID: sequencing run ID
+    * SM: sample name 
+    * LB: library prep ID
+    * PL: Platform (ILLUMINA)
   
 3. Convert SAM -> BAM
   * can do with with a pipe with bwa
@@ -31,3 +37,6 @@ bwa mem <REF.fasta> <R1.fq> <R2.fq> -K 100000000 -Y -R 'RG\tID:sequencing_run_id
 4. Mark Duplicates
   * Some options here. [Picard tools](https://broadinstitute.github.io/picard/) is the go-to standard
   * [Sambamba](http://lomereiter.github.io/sambamba/) is faster but not as well tested. 
+  * This step identifies and removes (unless needed) PCR duplicates
+  
+5. 
